@@ -37,6 +37,14 @@ BOOST_AUTO_TEST_CASE( simple30_45 ){
 	std::cout << " ... done\n";
 }
 
+BOOST_AUTO_TEST_CASE( neg_sim ){
+	std::cout << "Running Test # " << test_number++ << "\n";
+	BOOST_REQUIRE( gcd(-36, 45) == 9);
+	BOOST_REQUIRE( gcd(64, -32) == 32);
+	BOOST_REQUIRE( gcd(-88, -110) == 22);
+	std::cout << " ... done\n";
+}
+
 BOOST_AUTO_TEST_CASE( extreme_1 ){
 	std::cout << "Running Test # " << test_number++ << "\n";
 	BOOST_REQUIRE( gcd(0x7fffffff, 1) == 1);
@@ -66,7 +74,7 @@ BOOST_AUTO_TEST_CASE( extreme_neg_2 ){
 BOOST_AUTO_TEST_CASE( extreme_2_neg_min ){
 	std::cout << "Running Test # " << test_number++ << "\n";
 	int ans = gcd<int>(0x1 << 31, 0x1 << 31);
-	BOOST_REQUIRE(ans == 0x1 << 31); //// Using abs on an INT_MIN. TODO rectification.
+	BOOST_REQUIRE(ans == 0x1 << 31); //// Only in case of an INT_MIN, returning a negative.
 	std::cout << " ... done\n";
 }
 

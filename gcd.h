@@ -11,8 +11,16 @@ Int_Type i_gcd(Int_Type i, Int_Type j){
 
 template <typename Int_Type>
 Int_Type gcd(Int_Type i, Int_Type j){
+
 	Int_Type g = i_gcd<Int_Type>(i, j);
 
-	return abs(g); //// Might do abs() on an INT_MIN ... TODO
+	int ret = abs(g);
+	if(g < 0){
+		if(ret < 0 || ret < g)
+			return g;
+	}
+
+	return ret;
 }
+
 
