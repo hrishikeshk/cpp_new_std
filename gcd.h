@@ -1,4 +1,4 @@
-#include <limits.h>
+#include <tuple>
 #include <stdlib.h>
 
 #include "numeric_funcs.h"
@@ -19,5 +19,25 @@ Int_Type gcd(Int_Type i, Int_Type j){
 			return g;
 	}
 	return ret;
+}
+
+template<typename Int_Type>
+std::tuple<Int_Type, Int_Type, Int_Type> extended_gcd(Int_Type i, Int_Type j){
+
+	static_assert(std::is_convertible<Int_Type, unsigned long long int>::value, "Required, an integral type to invoke extended gcd functions");
+
+	auto triple = i_extended_gcd(i, j);
+
+	Int_Type g = std::get<2>(triple);
+
+	if(g >= (Int_Type)0)
+		return triple;
+	
+	Int_Type ret = abs(std::get<2>(triple));
+	if(g < (Int_Type)0){
+		if(ret < (Int_Type)0 || ret < g)
+			return triple;
+	}
+	return std::make_tuple(std::get<0>(triple), std::get<1>(triple), ret);
 }
 

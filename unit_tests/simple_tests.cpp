@@ -4,6 +4,7 @@
 #include <iostream>
 #include <stdlib.h>
 #include <limits>
+#include <tuple>
 
 #include "Test_Utils.h"
 #include "gcd.h"
@@ -17,6 +18,13 @@ BOOST_AUTO_TEST_SUITE ( test_suite1 )
 BOOST_AUTO_TEST_CASE( simple35 ){
 	std::cout << "Running Test # " << test_number++ << "\n";
 	BOOST_REQUIRE( gcd(3, 5) == 1);
+
+	auto result = extended_gcd(3, 5);
+	BOOST_REQUIRE(std::get<2>(result) == 1);
+	int x = std::get<0>(result);
+	int y = std::get<1>(result);
+	BOOST_REQUIRE( (x * 3 + y * 5) == 1);
+
 	std::cout << " ... done\n";
 }
 
@@ -29,12 +37,26 @@ BOOST_AUTO_TEST_CASE( simple53 ){
 BOOST_AUTO_TEST_CASE( simple24 ){
 	std::cout << "Running Test # " << test_number++ << "\n";
 	BOOST_REQUIRE( gcd(2, 4) == 2);
+
+	auto result = extended_gcd(2, 4);
+	BOOST_REQUIRE(std::get<2>(result) == 2);
+	int x = std::get<0>(result);
+	int y = std::get<1>(result);
+	BOOST_REQUIRE( (x * 2 + y * 4) == 2);
+
 	std::cout << " ... done\n";
 }
 
 BOOST_AUTO_TEST_CASE( simple30_45 ){
 	std::cout << "Running Test # " << test_number++ << "\n";
 	BOOST_REQUIRE( gcd(30, 45) == 15);
+
+	auto result = extended_gcd(30, 45);
+	BOOST_REQUIRE(std::get<2>(result) == 15);
+	int x = std::get<0>(result);
+	int y = std::get<1>(result);
+	BOOST_REQUIRE( (x * 30 + y * 45) == 15);
+
 	std::cout << " ... done\n";
 }
 
