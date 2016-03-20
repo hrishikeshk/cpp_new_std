@@ -8,12 +8,55 @@
 
 #include "Test_Utils.h"
 #include "gcd.h"
+#include "modulars.h"
 
 using namespace boost::unit_test;
 
 int test_number = 1;
 
-BOOST_AUTO_TEST_SUITE ( test_suite1 )
+BOOST_AUTO_TEST_SUITE ( test_suite_mods )
+
+BOOST_AUTO_TEST_CASE( simple12 ){
+        std::cout << "Running Test # " << test_number++ << "\n";
+
+        BOOST_REQUIRE( safe_modular_mult(1, 2, 2) == 0);
+        BOOST_REQUIRE( safe_modular_mult(2, 1, 4) == 2);
+        BOOST_REQUIRE( safe_modular_mult(10, 2, 3) == 2);
+        BOOST_REQUIRE( safe_modular_mult(11, 22, 5) == 2);
+        BOOST_REQUIRE( safe_modular_mult(213, 211235, 2) == 1);
+        BOOST_REQUIRE( safe_modular_mult(0x7fffffff, 1, 2) == 1);
+        BOOST_REQUIRE( safe_modular_mult(0x7fffffff, 0x7fffffff, 2) == 1);
+        BOOST_REQUIRE( safe_modular_mult(0x7fffffff, 0x7fffffff, 5) == 4);
+
+        std::cout << " ... done\n";
+}
+
+BOOST_AUTO_TEST_CASE( exceptions ){
+	std::cout << "Running Test # " << test_number++ << "\n";
+	bool thrown = false;
+	try{
+		safe_modular_mult(341, 4545, 0);
+	}
+	catch(...){
+		thrown = true;
+	}
+	BOOST_REQUIRE(thrown == true);
+
+	thrown = false;
+	try{
+		safe_modular_mult(0x7ffffffe, 2, 0x7fffffff);
+	}
+	catch(...){
+		thrown = true;
+	}
+	BOOST_REQUIRE(thrown == true);
+
+	std::cout << " ... done\n";
+}
+
+BOOST_AUTO_TEST_SUITE_END()
+
+BOOST_AUTO_TEST_SUITE ( test_suite_gcd )
 
 BOOST_AUTO_TEST_CASE( simple35 ){
 	std::cout << "Running Test # " << test_number++ << "\n";

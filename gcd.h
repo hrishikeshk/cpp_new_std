@@ -1,3 +1,6 @@
+#ifndef GCD_FUNCS
+#define GCD_FUNCS
+
 #include <tuple>
 #include <stdlib.h>
 
@@ -40,4 +43,6 @@ std::tuple<Int_Type, Int_Type, Int_Type> extended_gcd(Int_Type i, Int_Type j){
 	}
 	return std::make_tuple(std::get<0>(triple), std::get<1>(triple), ret);
 }
+
+#endif
 
