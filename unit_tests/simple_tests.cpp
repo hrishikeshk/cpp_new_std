@@ -28,6 +28,19 @@ BOOST_AUTO_TEST_CASE( simple12 ){
         BOOST_REQUIRE( safe_modular_mult(0x7fffffff, 0x7fffffff, 2) == 1);
         BOOST_REQUIRE( safe_modular_mult(0x7fffffff, 0x7fffffff, 5) == 4);
 
+	int inv = mod_mult_inverse(15, 7);
+	BOOST_REQUIRE( ( (inv * 15) % 7) == 1);
+
+	inv = mod_mult_inverse(8, 15);
+	BOOST_REQUIRE( ( (inv * 8) % 15) == 1);
+
+
+	inv = fl_mod_mult_inverse(15, 7);
+	BOOST_REQUIRE( ( (inv * 15) % 7) == 1);
+
+	inv = fl_mod_mult_inverse(8, 5);
+	BOOST_REQUIRE( ( (inv * 8) % 5) == 1);
+
         std::cout << " ... done\n";
 }
 
@@ -45,6 +58,24 @@ BOOST_AUTO_TEST_CASE( exceptions ){
 	thrown = false;
 	try{
 		safe_modular_mult(0x7ffffffe, 2, 0x7fffffff);
+	}
+	catch(...){
+		thrown = true;
+	}
+	BOOST_REQUIRE(thrown == true);
+
+	thrown = false;
+	try{
+		mod_mult_inverse(27, 21);
+	}
+	catch(...){
+		thrown = true;
+	}
+	BOOST_REQUIRE(thrown == true);
+
+	thrown = false;
+	try{
+		fl_mod_mult_inverse(42, 21);
 	}
 	catch(...){
 		thrown = true;
