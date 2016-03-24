@@ -34,12 +34,25 @@ BOOST_AUTO_TEST_CASE( simple12 ){
 	inv = mod_mult_inverse(8, 15);
 	BOOST_REQUIRE( ( (inv * 8) % 15) == 1);
 
-
-	inv = fl_mod_mult_inverse(15, 7);
+	inv = flt_mod_mult_inverse(15, 7);
 	BOOST_REQUIRE( ( (inv * 15) % 7) == 1);
 
-	inv = fl_mod_mult_inverse(8, 5);
+	inv = flt_mod_mult_inverse(8, 5);
 	BOOST_REQUIRE( ( (inv * 8) % 5) == 1);
+
+	unsigned long long int inv_ull = mod_mult_inverse<unsigned long long int>(0x7fffffff, 1000003);
+	BOOST_REQUIRE( ( (inv_ull * 0x7fffffff) % 1000003) == 1);
+
+	inv_ull = mod_mult_inverse<unsigned long long int>(4, 1000003);
+	BOOST_REQUIRE( ( (inv_ull * 4) % 1000003) == 1);
+
+///////////
+
+	inv_ull = flt_mod_mult_inverse<unsigned long long int>(4, 1000003);
+	BOOST_REQUIRE( ( (inv_ull * 4) % 1000003) == 1);
+
+	inv_ull = flt_mod_mult_inverse<unsigned long long int>(0x7fffffff, 1000003);
+	BOOST_REQUIRE( ( (inv_ull * 0x7fffffff) % 1000003) == 1);
 
         std::cout << " ... done\n";
 }
@@ -75,7 +88,7 @@ BOOST_AUTO_TEST_CASE( exceptions ){
 
 	thrown = false;
 	try{
-		fl_mod_mult_inverse(42, 21);
+		flt_mod_mult_inverse(42, 21);
 	}
 	catch(...){
 		thrown = true;
