@@ -17,7 +17,7 @@ template<typename Int_Type>
 std::tuple<Int_Type, Int_Type, Int_Type> i_extended_gcd(Int_Type i, Int_Type j){
 
 	if(i == (Int_Type)0){
-		return std::make_tuple<Int_Type, Int_Type, Int_Type>(0, 1, j);
+		return std::make_tuple<Int_Type, Int_Type, Int_Type>(0, 1, (Int_Type)j);
 	}
 
 	auto triple = i_extended_gcd(j % i, i);
@@ -25,13 +25,9 @@ std::tuple<Int_Type, Int_Type, Int_Type> i_extended_gcd(Int_Type i, Int_Type j){
 	return std::make_tuple(std::get<1>(triple) - std::get<0>(triple)*(j / i), std::get<0>(triple), std::get<2>(triple));
 }
 
-int f(double a, int b){
-std::cout << "a = " << a << " , b = " << b << "\n";
-	return 0;
-}
-
 template<typename Int_Type>
-Int_Type i_safe_modular_mult(Int_Type first, Int_Type second, Int_Type mod){
+//Int_Type i_safe_modular_mult(Int_Type first, Int_Type second, Int_Type mod){
+auto i_safe_modular_mult(Int_Type first, Int_Type second, Int_Type mod){
 
 	if(second < 3){
 		return ( first * second ) % mod;
@@ -44,46 +40,33 @@ Int_Type i_safe_modular_mult(Int_Type first, Int_Type second, Int_Type mod){
 	}
 }
 
-/*
- * This code should compile - TODO
-////////////////////////////////////
-std::function<int(double, int)> fo = f;
-auto func_with_ = std::bind(f,0,_1);
-auto tuple = std::make_tuple(fo, func_with_);
-
-auto f1 = std::get<0>(tuple);
-f1(2.1, 4);
-
-auto f2 = std::get<1>(tuple);
-//f2(8);
-func_with_(8);
-
-//////////////////////////////////
-*/
-/*
 template<typename Setter, typename Getter>
-std::tuple<std::function<unsigned int()>, std::function<bool (Getter, unsigned int)>> 
+std::tuple<std::function<unsigned int()>, std::function<bool (unsigned int)>>
 	sieve(unsigned int alloc_size, Setter set_func, Getter get_func){
 
 	unsigned int m = 3, n = 3;
-	auto index = ( (m * n) / 2 - 1);
+	auto index = ( ( (m * m) >> 1) - 1);
 
 	while(index < alloc_size){
 		set_func(index);
-		n += 2;
-		index = ( (m * n) / 2 - 1);
+		index += m;
 		if(index >= alloc_size){
-			m += 2;
-			n = m;
-			index = ( (m * n) / 2 - 1);
+			n += 2;
+			m = n;
+			index = ( ( (m * m) >> 1) - 1);
 		}
 	}
-
 	return std::make_tuple(
-				[&](){ 
-					return (alloc_size + 1) * 2; 
+				[=](){ 
+					return alloc_size * 2 + 1; 
 				},
-				[&](Getter get_func, unsigned int query_num){ 
+				[&get_func,alloc_size](unsigned int query_num){ 
+					if(query_num == 2)
+						return false;
+					if( !(query_num & 1))
+						return true;
+					if(query_num < 9)
+						return false;
 					auto target = (query_num / 2) - 1;
 					if(target >= alloc_size)
 						throw "Exception: Bad usage, out of bounds access";
@@ -91,7 +74,6 @@ std::tuple<std::function<unsigned int()>, std::function<bool (Getter, unsigned i
 				}
 			);
 }
-*/
 
 #endif
 
