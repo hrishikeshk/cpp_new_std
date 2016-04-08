@@ -25,9 +25,9 @@ std::tuple<Int_Type, Int_Type, Int_Type> i_extended_gcd(Int_Type i, Int_Type j){
 	return std::make_tuple(std::get<1>(triple) - std::get<0>(triple)*(j / i), std::get<0>(triple), std::get<2>(triple));
 }
 
-template<typename Int_Type>
 //Int_Type i_safe_modular_mult(Int_Type first, Int_Type second, Int_Type mod){
-auto i_safe_modular_mult(Int_Type first, Int_Type second, Int_Type mod){
+template<typename Int_Type>
+auto i_safe_modular_mult(Int_Type first, Int_Type second, Int_Type mod) -> Int_Type{
 
 	if(second < 3){
 		return ( first * second ) % mod;
@@ -43,19 +43,39 @@ auto i_safe_modular_mult(Int_Type first, Int_Type second, Int_Type mod){
 template<typename Setter, typename Getter>
 std::tuple<std::function<unsigned int()>, std::function<bool (unsigned int)>>
 	sieve(unsigned int alloc_size, Setter set_func, Getter get_func){
-
+/*
 	unsigned int m = 3, n = 3;
-	auto index = ( ( (m * m) >> 1) - 1);
+	auto index_num = m * m;
+	auto two_m = (m << 1);
+*/
 
-	while(index < alloc_size){
-		set_func(index);
-		index += m;
-		if(index >= alloc_size){
+	auto max_num = (alloc_size << 1) + 1;
+	unsigned int m = 3, p, two_m = (m << 1);
+	while(m * m <= max_num){
+		if(!get_func( (m >> 1) - 1) ){
+			p = m + two_m;
+			while(p <= max_num){
+				set_func( (p >> 1) - 1);
+				p += two_m;
+			}
+		}
+		m += 2;
+		two_m = (m << 1);
+	}
+
+////
+/*
+	while(index_num <= max_num){
+		set_func(( index_num >> 1) - 1);
+		index_num += two_m;
+		if(index_num > max_num){
 			n += 2;
 			m = n;
-			index = ( ( (m * m) >> 1) - 1);
+			two_m = (m << 1);
+			index_num = m * m;
 		}
 	}
+*/
 	return std::make_tuple(
 				[=](){ 
 					return alloc_size * 2 + 1; 
@@ -73,6 +93,101 @@ std::tuple<std::function<unsigned int()>, std::function<bool (unsigned int)>>
 					return get_func(target);
 				}
 			);
+}
+
+template<typename Setter, typename Getter>
+std::tuple<std::function<unsigned int()>, std::function<bool (unsigned int)>>
+	seg_sieve(unsigned int alloc_size, Setter set_func, Getter get_func){
+
+	auto max_num = (alloc_size << 1) + 1;
+	unsigned int sim_limit = sqrt(max_num);
+	unsigned int m = 3, two_m = (m << 1), index_num;
+
+
+/*
+ 	unsigned int p;
+	while(m * m <= sim_limit){
+		if(!get_func( (m >> 1) - 1) ){
+			p = m + two_m;
+			while(p <= max_num){
+				set_func( (p >> 1) - 1);
+				p += two_m;
+			}
+		}
+		m += 2;
+		two_m = (m << 1);
+	}
+*/
+
+////
+
+
+	unsigned int n = 3;
+	index_num = m * m;
+	while(index_num <= sim_limit){
+		set_func(( index_num >> 1) - 1);
+		index_num += two_m;
+		if(index_num > sim_limit){
+			n += 2;
+			m = n;
+			two_m = (m << 1);
+			index_num = m * m;
+		}
+	}
+
+
+	std::vector<unsigned int> primes;
+	primes.push_back(3);
+	primes.push_back(5);
+	primes.push_back(7);
+	for(unsigned int i = 4; i <= (sim_limit >> 1) - 1; ++i){
+		if(get_func(i)){
+			primes.push_back (((i + 1) << 1) + 1);
+		}
+	}
+
+	unsigned int low_num =  (max_num % sim_limit) + 2;
+	unsigned int high_num = low_num + sim_limit;
+	unsigned int two_p;
+
+	while(high_num <= max_num){
+
+		for(auto p : primes){
+			two_p = (p << 1);
+			index_num = (low_num / p) * p;
+			if(index_num & 1){
+				if(index_num < low_num)
+					index_num += two_p;
+			}
+			else{
+				index_num += p;
+			}
+			while(index_num <= high_num){
+				set_func( (index_num >> 1) - 1);
+				index_num += two_p;
+			}
+		}
+		low_num = high_num + 1;
+		high_num = low_num + sim_limit;
+	}
+
+	return std::make_tuple(
+				[=](){ 
+					return alloc_size * 2 + 1; 
+				},
+				[&get_func,alloc_size](unsigned int query_num){ 
+					if(query_num == 2)
+						return false;
+					if( !(query_num & 1))
+						return true;
+					if(query_num < 9)
+						return false;
+					auto target = (query_num / 2) - 1;
+					if(target >= alloc_size)
+						throw "Exception: Bad usage, out of bounds access";
+					return get_func(target);
+				}
+		);
 }
 
 #endif

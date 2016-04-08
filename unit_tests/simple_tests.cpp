@@ -207,18 +207,14 @@ BOOST_AUTO_TEST_CASE( extreme_neg_2 ){
 
 BOOST_AUTO_TEST_CASE( extreme_2_neg_min ){
 	std::cout << "Running Test # " << test_number++ << "\n";
-	int ans = gcd<int>(0x1 << 31, 0x1 << 31);
-	BOOST_REQUIRE(ans == 0x1 << 31); //// Only in case of an INT_MIN, returning a negative.
+	int ans = gcd<int>(1 << 31, 1 << 31);
+	BOOST_REQUIRE(ans == (1 << 31) ); //// Only in case of an INT_MIN, returning a negative.
 	std::cout << " ... done\n";
 }
 
 BOOST_AUTO_TEST_SUITE_END()
 
-
-BOOST_AUTO_TEST_SUITE ( test_suite_sieve )
-
-BOOST_AUTO_TEST_CASE( simple_sieve_small ){
-	std::cout << "Running Test # " << test_number++ << "\n";
+void run_sieve(){
 
 	unsigned int allocate = (1 << 20);
 	bool init = false;
@@ -235,6 +231,7 @@ BOOST_AUTO_TEST_CASE( simple_sieve_small ){
 	BOOST_REQUIRE(allocated_ret == allocate * 2 + 1);
 	auto prime_getter = std::get<1>(func_tuple);
 
+//primes
 	BOOST_REQUIRE(prime_getter(2) == init);
 	BOOST_REQUIRE(prime_getter(3) == init);
 	BOOST_REQUIRE(prime_getter(5) == init);
@@ -245,15 +242,72 @@ BOOST_AUTO_TEST_CASE( simple_sieve_small ){
 	BOOST_REQUIRE(prime_getter(1759) == init);
 	BOOST_REQUIRE(prime_getter(1000003) == init);
 
-
+//non-primes
 	BOOST_REQUIRE(prime_getter(9) == !init);
 	BOOST_REQUIRE(prime_getter(12) == !init);
+	BOOST_REQUIRE(prime_getter(51) == !init);
 	BOOST_REQUIRE(prime_getter(57) == !init);
 	BOOST_REQUIRE(prime_getter(78) == !init);
 	BOOST_REQUIRE(prime_getter(110) == !init);
 	BOOST_REQUIRE(prime_getter(1011) == !init);
 	BOOST_REQUIRE(prime_getter(1 << 20) == !init);
 	BOOST_REQUIRE(prime_getter( (1 << 20) - 1) == !init);
+}
+
+void run_seg_sieve(){
+
+	unsigned int allocate = (1 << 20);
+	bool init = false;
+	
+	std::vector<bool> sieve_store(allocate, init);
+
+	auto bound_setter = std::bind(simple_setter, &sieve_store, !init, std::placeholders::_1);
+	auto bound_getter = std::bind(simple_getter, &sieve_store, std::placeholders::_1);
+
+	auto func_tuple = seg_sieve(allocate, bound_setter, bound_getter);
+
+	auto alloc_func = std::get<0>(func_tuple);
+	unsigned int allocated_ret = alloc_func();
+	BOOST_REQUIRE(allocated_ret == allocate * 2 + 1);
+	auto prime_getter = std::get<1>(func_tuple);
+
+//primes
+	BOOST_REQUIRE(prime_getter(2) == init);
+	BOOST_REQUIRE(prime_getter(3) == init);
+	BOOST_REQUIRE(prime_getter(5) == init);
+	BOOST_REQUIRE(prime_getter(7) == init);
+	BOOST_REQUIRE(prime_getter(11) == init);
+	BOOST_REQUIRE(prime_getter(19) == init);
+	BOOST_REQUIRE(prime_getter(101) == init);
+	BOOST_REQUIRE(prime_getter(1759) == init);
+	BOOST_REQUIRE(prime_getter(1000003) == init);
+
+//non-primes
+	BOOST_REQUIRE(prime_getter(9) == !init);
+	BOOST_REQUIRE(prime_getter(12) == !init);
+	BOOST_REQUIRE(prime_getter(51) == !init);
+	BOOST_REQUIRE(prime_getter(57) == !init);
+	BOOST_REQUIRE(prime_getter(78) == !init);
+	BOOST_REQUIRE(prime_getter(110) == !init);
+	BOOST_REQUIRE(prime_getter(1011) == !init);
+	BOOST_REQUIRE(prime_getter(1 << 20) == !init);
+	BOOST_REQUIRE(prime_getter( (1 << 20) - 1) == !init);
+}
+
+BOOST_AUTO_TEST_SUITE ( test_suite_sieve )
+
+BOOST_AUTO_TEST_CASE( simple_sieve_small ){
+	std::cout << "Running Test # " << test_number++ << "\n";
+
+	run_sieve();
+
+	std::cout << " ... done\n";
+}
+
+BOOST_AUTO_TEST_CASE( seg_sieve_small ){
+	std::cout << "Running Test # " << test_number++ << "\n";
+
+	run_seg_sieve();
 
 	std::cout << " ... done\n";
 }
@@ -270,6 +324,34 @@ BOOST_AUTO_TEST_CASE( exception_sieve_small ){
 	auto bound_getter = std::bind(simple_getter, &sieve_store, std::placeholders::_1);
 
 	auto func_tuple = sieve(allocate, bound_setter, bound_getter);
+	auto prime_getter = std::get<1>(func_tuple);
+
+	BOOST_REQUIRE(prime_getter(51) == !init);
+
+	bool thrown = false;
+	try{
+		prime_getter(53);
+	}
+	catch(...){
+		thrown = true;
+	}
+	BOOST_REQUIRE(thrown == true);
+
+	std::cout << " ... done\n";
+}
+
+BOOST_AUTO_TEST_CASE( exception_seg_sieve_small ){
+	std::cout << "Running Test # " << test_number++ << "\n";
+
+	unsigned int allocate = (25);
+	bool init = false;
+	
+	std::vector<bool> sieve_store(allocate, init);
+
+	auto bound_setter = std::bind(simple_setter, &sieve_store, !init, std::placeholders::_1);
+	auto bound_getter = std::bind(simple_getter, &sieve_store, std::placeholders::_1);
+
+	auto func_tuple = seg_sieve(allocate, bound_setter, bound_getter);
 	auto prime_getter = std::get<1>(func_tuple);
 
 	BOOST_REQUIRE(prime_getter(51) == !init);
