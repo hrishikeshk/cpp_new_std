@@ -5,6 +5,8 @@
 #include <vector>
 #include <time.h>
 
+#include <string.h>
+
 #include "Test_Utils.h"
 #include "gcd.h"
 #include "modulars.h"
@@ -18,15 +20,16 @@ BOOST_AUTO_TEST_CASE( large_sieve_perf ){
 
 	std::cout << "Running Test # " << "1\n";
 
-	double regression_limit_sieve = 20.0;
+	double regression_limit_sieve = 15.0;
 
         unsigned int allocate = (1 << 25);
         bool init = false;
 
-        std::vector<bool> sieve_store(allocate, init);
+        bool* sieve_store = new bool[1 << 25];
+	memset(sieve_store, 0, 1 << 25);
 
-        auto bound_setter = std::bind(simple_setter, &sieve_store, !init, std::placeholders::_1);
-        auto bound_getter = std::bind(simple_getter, &sieve_store, std::placeholders::_1);
+        auto bound_setter = std::bind(boolarr_setter, sieve_store, !init, std::placeholders::_1);
+        auto bound_getter = std::bind(boolarr_getter, sieve_store, std::placeholders::_1);
 
 	time_t t_start = time(NULL);
         auto func_tuple = sieve(allocate, bound_setter, bound_getter);
@@ -64,6 +67,8 @@ BOOST_AUTO_TEST_CASE( large_sieve_perf ){
 
 	BOOST_REQUIRE(sieve_time <= regression_limit_sieve);
 
+	delete[] sieve_store;
+
 	std::cout << " ... done\n";
 
 }
@@ -71,15 +76,16 @@ BOOST_AUTO_TEST_CASE( large_sieve_perf ){
 BOOST_AUTO_TEST_CASE( seg_sieve_perf ){
 	std::cout << "Running Test # " << "2\n";
 
-	double regression_limit_sieve = 20.0;
+	double regression_limit_sieve = 15.0;
 
         unsigned int allocate = (1 << 25);
         bool init = false;
 
-        std::vector<bool> sieve_store(allocate, init);
+	bool* sieve_store = new bool[1 << 25];
+	memset(sieve_store, 0, 1 << 25);
 
-        auto bound_setter = std::bind(simple_setter, &sieve_store, !init, std::placeholders::_1);
-        auto bound_getter = std::bind(simple_getter, &sieve_store, std::placeholders::_1);
+        auto bound_setter = std::bind(boolarr_setter, sieve_store, !init, std::placeholders::_1);
+        auto bound_getter = std::bind(boolarr_getter, sieve_store, std::placeholders::_1);
 
 	time_t t_start = time(NULL);
         auto func_tuple = seg_sieve(allocate, bound_setter, bound_getter);
@@ -116,6 +122,8 @@ BOOST_AUTO_TEST_CASE( seg_sieve_perf ){
 	std::cout << " Time for sieving = " << sieve_time << " seconds\n";
 
 	BOOST_REQUIRE(sieve_time <= regression_limit_sieve);
+
+	delete[] sieve_store;
 
 	std::cout << " ... done\n";
 }
