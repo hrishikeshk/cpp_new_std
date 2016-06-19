@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <vector>
+#include <bitset>
 #include <time.h>
 
 #include <string.h>
@@ -124,6 +125,58 @@ BOOST_AUTO_TEST_CASE( seg_sieve_perf ){
 	BOOST_REQUIRE(sieve_time <= regression_limit_sieve);
 
 	delete[] sieve_store;
+
+	std::cout << " ... done\n";
+}
+
+BOOST_AUTO_TEST_CASE( seg_sieve_bitset_perf ){
+	std::cout << "Running Test # " << "3\n";
+
+	double regression_limit_sieve = 20.0;
+
+        unsigned int allocate = (1 << 25);
+        bool init = false;
+
+	std::bitset< 1<<25 > sieve_store(0);
+
+        auto bound_setter = std::bind(bsarr_setter, &sieve_store, !init, std::placeholders::_1);
+        auto bound_getter = std::bind(bsarr_getter, &sieve_store, std::placeholders::_1);
+
+	time_t t_start = time(NULL);
+        auto func_tuple = seg_sieve(allocate, bound_setter, bound_getter);
+	time_t t_sieve = time(NULL);
+
+        auto alloc_func = std::get<0>(func_tuple);
+        unsigned int allocated_ret = alloc_func();
+        BOOST_REQUIRE(allocated_ret == allocate * 2 + 1);
+        auto prime_getter = std::get<1>(func_tuple);
+
+	BOOST_REQUIRE(prime_getter(2) == init);
+        BOOST_REQUIRE(prime_getter(3) == init);
+        BOOST_REQUIRE(prime_getter(5) == init);
+        BOOST_REQUIRE(prime_getter(7) == init);
+        BOOST_REQUIRE(prime_getter(11) == init);
+        BOOST_REQUIRE(prime_getter(19) == init);
+        BOOST_REQUIRE(prime_getter(101) == init);
+        BOOST_REQUIRE(prime_getter(1759) == init);
+        BOOST_REQUIRE(prime_getter(1000003) == init);
+
+
+	BOOST_REQUIRE(prime_getter(9) == !init);
+        BOOST_REQUIRE(prime_getter(12) == !init);
+        BOOST_REQUIRE(prime_getter(51) == !init);
+        BOOST_REQUIRE(prime_getter(57) == !init);
+        BOOST_REQUIRE(prime_getter(78) == !init);
+        BOOST_REQUIRE(prime_getter(110) == !init);
+        BOOST_REQUIRE(prime_getter(1011) == !init);
+        BOOST_REQUIRE(prime_getter(1 << 20) == !init);
+        BOOST_REQUIRE(prime_getter( (1 << 20) - 1) == !init);
+
+
+	double sieve_time = difftime(t_sieve, t_start); 
+	std::cout << " Time for sieving = " << sieve_time << " seconds\n";
+
+	BOOST_REQUIRE(sieve_time <= regression_limit_sieve);
 
 	std::cout << " ... done\n";
 }

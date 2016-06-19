@@ -49,6 +49,9 @@ std::tuple<std::function<unsigned int()>, std::function<bool (unsigned int)>>
 	auto two_m = (m << 1);
 */
 
+	if(alloc_size < 5)
+		throw "Unsupported for allocation sizes less than 5 numbers";
+
 	auto max_num = (alloc_size << 1) + 1;
 	unsigned int m = 3, p, two_m = (m << 1);
 	while(m * m <= max_num){
@@ -82,11 +85,11 @@ std::tuple<std::function<unsigned int()>, std::function<bool (unsigned int)>>
 				},
 				[&get_func,alloc_size](unsigned int query_num){ 
 					if(query_num == 2)
-						return false;
+						return get_func(4);
 					if( !(query_num & 1))
-						return true;
+						return get_func(3);
 					if(query_num < 9)
-						return false;
+						return get_func(4);
 					auto target = (query_num / 2) - 1;
 					if(target >= alloc_size)
 						throw "Exception: Bad usage, out of bounds access";
@@ -99,17 +102,20 @@ template<typename Setter, typename Getter>
 std::tuple<std::function<unsigned int()>, std::function<bool (unsigned int)>>
 	seg_sieve(unsigned int alloc_size, Setter set_func, Getter get_func){
 
+	if(alloc_size < 5)
+		throw "Unsupported for allocation sizes less than 5 numbers";
+
 	auto max_num = (alloc_size << 1) + 1;
 	unsigned int sim_limit = sqrt(max_num);
 	unsigned int m = 3, two_m = (m << 1), index_num;
 
 
-/*
+
  	unsigned int p;
 	while(m * m <= sim_limit){
 		if(!get_func( (m >> 1) - 1) ){
 			p = m + two_m;
-			while(p <= max_num){
+			while(p <= sim_limit){
 				set_func( (p >> 1) - 1);
 				p += two_m;
 			}
@@ -117,11 +123,11 @@ std::tuple<std::function<unsigned int()>, std::function<bool (unsigned int)>>
 		m += 2;
 		two_m = (m << 1);
 	}
-*/
+
 
 ////
 
-
+/*
 	unsigned int n = 3;
 	index_num = m * m;
 	while(index_num <= sim_limit){
@@ -134,7 +140,7 @@ std::tuple<std::function<unsigned int()>, std::function<bool (unsigned int)>>
 			index_num = m * m;
 		}
 	}
-
+*/
 
 	std::vector<unsigned int> primes;
 	primes.push_back(3);
@@ -177,11 +183,11 @@ std::tuple<std::function<unsigned int()>, std::function<bool (unsigned int)>>
 				},
 				[&get_func,alloc_size](unsigned int query_num){ 
 					if(query_num == 2)
-						return false;
+						return get_func(4);
 					if( !(query_num & 1))
-						return true;
+						return get_func(3);
 					if(query_num < 9)
-						return false;
+						return get_func(4);
 					auto target = (query_num / 2) - 1;
 					if(target >= alloc_size)
 						throw "Exception: Bad usage, out of bounds access";

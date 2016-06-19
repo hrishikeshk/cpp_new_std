@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <vector>
+#include <bitset>
 
 template <typename T, typename Func>
 bool compare(const T& actual, const T& correct, int& test_number){
@@ -28,6 +29,14 @@ void boolarr_setter(bool* store, bool data, unsigned int offset){
 
 bool boolarr_getter(bool* store, unsigned int offset){
 	return store[offset];
+}
+
+void bsarr_setter(std::bitset< 1<<25 >* store, bool data, unsigned int offset){
+	(*store)[offset] = data;
+}
+
+bool bsarr_getter(std::bitset< 1<<25 >* store, unsigned int offset){
+	return (*store)[offset];
 }
 
 #endif
