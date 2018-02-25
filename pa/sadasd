@@ -1,0 +1,14 @@
+include $(SRC_DIR)/OptMake
+
+.PHONY: clean
+
+TST_INCLUDES=-I $(SRC_DIR)/pa
+
+pa: List_Functions.o
+
+List_Functions.o: List_Functions.cpp
+	$(CC) $(OPTIONS) $(WARN) $(DEBUG) $(FPIC_OBJ) $(INCLUDES) $(TST_INCLUDES) -o List_Functions.o -c List_Functions.cpp
+
+clean:
+	rm -rf *.o
+

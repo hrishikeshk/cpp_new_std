@@ -1,6 +1,6 @@
 include OptMake
 
-.PHONY: unit_tests clean
+.PHONY: pa unit_tests clean
 
 DIRS=unit_tests
 

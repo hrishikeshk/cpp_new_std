@@ -4,7 +4,8 @@ WARN=-Wall
 
 DEBUG=-g -ggdb
 
-CC=/opt/rh/devtoolset-2/root/usr/bin/g++
+#CC=/opt/rh/devtoolset-2/root/usr/bin/g++
+CC=/usr/bin/g++
 
 SHAREDLIB_FLAGS=-shared -fPIC
 
