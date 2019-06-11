@@ -11,6 +11,6 @@ SHAREDLIB_FLAGS=-shared -fPIC
 
 FPIC_OBJ=-fPIC
 
-INCLUDES=-I $(SRC_DIR)
+INCLUDES=-I $(SRC_DIR) -I /home/hrishikesh/work/boost/include
 
 OPTIONS=-D _DEBUG_BUILD_ -std=c++0x
