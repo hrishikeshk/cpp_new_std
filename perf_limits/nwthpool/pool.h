@@ -10,7 +10,8 @@ class Pool{
 	static Pool* ms_instance;
 	boost::asio::io_service ioService;
 	boost::thread_group threadpool;
-	boost::asio::io_service::work* pwork;
+	//boost::asio::io_service::work* pwork;
+	boost::asio::io_service::work work {ioService};
 
 private:
 	Pool(const Pool& rhs);

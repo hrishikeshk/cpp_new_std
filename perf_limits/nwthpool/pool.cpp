@@ -9,7 +9,7 @@ Pool::Pool(){
 }
 
 Pool::~Pool(){
-	delete pwork;
+	//delete pwork;
 	threadpool.join_all();
 }
 
@@ -36,7 +36,7 @@ void Pool::create_num(int t){
 
 void Pool::start_io(){
 	//boost::asio::io_service::work work(ioService);
-	pwork = new boost::asio::io_service::work(ioService);
+	//pwork = new boost::asio::io_service::work(ioService);
 }
 
 void Pool::stop_io(){
@@ -48,6 +48,9 @@ void Pool::post_work(){
 	a[0] = '7'; a[1] = '7'; a[2] = '8'; a[3] = '6';
 	const auto& bb = boost::bind(&Pool::myTask, this, a);
 	ioService.post(bb);
+
+	ioService.poll();
+
 	ioService.post(boost::bind(&Pool::clearCache, this, 'Y'));
 	ioService.post(boost::bind(&Pool::getSocialUpdates, this, 7786));
 	std::cout << "... ... Finishing posting\n";
