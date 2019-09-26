@@ -21,7 +21,6 @@ Pool* Pool::Instance(){
 }
 
 void Pool::Release(){
-	
 	if (ms_instance) {
 		delete ms_instance;
 	}
@@ -49,11 +48,13 @@ void Pool::post_work(){
 	const auto& bb = boost::bind(&Pool::myTask, this, a);
 	ioService.post(bb);
 
-	ioService.poll();
-
 	ioService.post(boost::bind(&Pool::clearCache, this, 'Y'));
 	ioService.post(boost::bind(&Pool::getSocialUpdates, this, 7786));
 	std::cout << "... ... Finishing posting\n";
+	ioService.poll();
+}
+
+void Pool::poll(){
 	ioService.poll();
 }
 
