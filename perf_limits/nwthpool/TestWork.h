@@ -10,8 +10,7 @@ T2 test_func_iit(T1& a){
 	return t2; 
 }
 
-int test_func_ii(int* pa){
-	int& a = *pa;
+int test_func_ii(int& a){
 	int oa = a;
 	int digits = 0;
 	while(a){
@@ -22,8 +21,7 @@ int test_func_ii(int* pa){
 	return digits;
 }
 
-bool test_func_bs(std::string* pa){
-	std::string& a = *pa;
+bool test_func_bs(std::string& a){
 	int i = 0, j = a.length() - 1;
 	while(i < j){
 		if(a[i] != a[j]){
@@ -37,9 +35,14 @@ bool test_func_bs(std::string* pa){
 	return true;
 }
 
-char test_func_ci(int* pa){
-	int& a = *pa;
+char test_func_ci(int& a){
 	std::cout << "Negating: " << a << " = " << -a << "\n";
 	a = -1 * a;
 	return 'a';
+}
+
+int test_func_ii_ref(int& a){
+	std::cout << "Negating: " << a << " = " << -a << "\n";
+	a = -1 * a;
+	return a;
 }

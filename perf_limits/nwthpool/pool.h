@@ -43,7 +43,7 @@ public:
 		}
 		ioService.poll();
 	}
-	
+	/*
 	template<typename WorkObj, typename ResultObj>
 	void post_work_generic(std::function<ResultObj(WorkObj*)> f, 
 						   WorkObj& wo){
@@ -52,6 +52,13 @@ public:
 		////std::cout << "... Finishing posting Generic\n";
 		
 		////ioService.poll();
+	}
+	*/
+	template<typename WorkObj, typename ResultObj>
+	void post_work_generic(std::function<ResultObj(WorkObj&)> f, 
+						   WorkObj& wo){
+		const auto& bb = boost::bind(f, std::ref(wo));
+		ioService.post(bb);
 	}
 	
 	void poll();
