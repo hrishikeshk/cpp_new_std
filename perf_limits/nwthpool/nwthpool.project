@@ -8,6 +8,7 @@
   <Description/>
   <Dependencies/>
   <VirtualDirectory Name="src">
+    <File Name="ThreadPoolUsage.h"/>
     <File Name="TestWork.h"/>
     <File Name="pool.cpp"/>
     <File Name="pool.h"/>

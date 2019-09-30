@@ -1,6 +1,8 @@
 #include <string>
 #include <iostream>
 
+#ifndef TEST_WORK
+#define TEST_WORK
 template<typename Data, typename Result>
 Result test_func(Data& d);
 
@@ -46,3 +48,4 @@ int test_func_ii_ref(int& a){
 	a = -1 * a;
 	return a;
 }
+#endif
