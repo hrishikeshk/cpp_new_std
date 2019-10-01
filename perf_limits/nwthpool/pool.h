@@ -36,7 +36,7 @@ public:
 	template<typename WorkObj, typename ResultObj>
 	void post_work_generic_vec(std::vector<std::function<ResultObj(WorkObj&)>>& vf, 
 							std::vector<WorkObj>& vwo){
-		for(int i = 0; i < vf.size(); ++i){
+		for(unsigned int i = 0; i < vf.size(); ++i){
 			const auto& bb = boost::bind(vf[i], std::ref(vwo[i]));
 			ioService.post(bb);
 			////std::cout << "... Finishing posting Generic\n";

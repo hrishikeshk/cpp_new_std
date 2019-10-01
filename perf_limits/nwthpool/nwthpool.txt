@@ -1,1 +1,1 @@
-./Debug/main.cpp.o ./Debug/pool.cpp.o ./Debug/application.cpp.o
+./Debug/main.cpp.o ./Debug/application.cpp.o ./Debug/ConnectionManager.cpp.o ./Debug/Server.cpp.o ./Debug/Connection.cpp.o ./Debug/pool.cpp.o

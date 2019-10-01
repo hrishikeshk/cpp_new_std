@@ -8,6 +8,12 @@
   <Description/>
   <Dependencies/>
   <VirtualDirectory Name="src">
+    <File Name="Server.cpp"/>
+    <File Name="ConnectionManager.cpp"/>
+    <File Name="ConnectionManager.h"/>
+    <File Name="Connection.cpp"/>
+    <File Name="Connection.h"/>
+    <File Name="Server.h"/>
     <File Name="ThreadPoolUsage.h"/>
     <File Name="TestWork.h"/>
     <File Name="pool.cpp"/>

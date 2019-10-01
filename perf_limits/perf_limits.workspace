@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CodeLite_Workspace Name="perf_limits" Database="" Version="10.0.0">
   <Project Name="nwthpool" Path="nwthpool/nwthpool.project" Active="Yes"/>
+  <Project Name="nwthpoolTest" Path="nwthpoolTest/nwthpoolTest.project" Active="No"/>
   <BuildMatrix>
     <WorkspaceConfiguration Name="Debug" Selected="yes">
       <Environment/>
       <Project Name="nwthpool" ConfigName="Debug"/>
+      <Project Name="nwthpoolTest" ConfigName="Debug"/>
     </WorkspaceConfiguration>
     <WorkspaceConfiguration Name="Release" Selected="yes">
       <Environment/>
       <Project Name="nwthpool" ConfigName="Release"/>
+      <Project Name="nwthpoolTest" ConfigName="Release"/>
     </WorkspaceConfiguration>
   </BuildMatrix>
 </CodeLite_Workspace>

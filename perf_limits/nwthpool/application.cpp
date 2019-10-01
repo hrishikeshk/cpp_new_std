@@ -3,6 +3,7 @@
 
 #include "application.h"
 #include "ThreadPoolUsage.h"
+#include "Server.h"
 
 Application* Application::ms_instance = nullptr;
 
@@ -31,5 +32,8 @@ void Application::Release(){
 void Application::run(){
 	std::cout << " ... Running Apps \n";
 	
-	ThreadPoolUsage::run();
+	////ThreadPoolUsage::run();
+	Server s("127.0.0.1", "8080");
+	s.run();
+	std::cout << "Finished Server \n";
 }
