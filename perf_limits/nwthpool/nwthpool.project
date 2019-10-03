@@ -8,6 +8,7 @@
   <Description/>
   <Dependencies/>
   <VirtualDirectory Name="src">
+    <File Name="BusinessLogic.h"/>
     <File Name="Server.cpp"/>
     <File Name="ConnectionManager.cpp"/>
     <File Name="ConnectionManager.h"/>

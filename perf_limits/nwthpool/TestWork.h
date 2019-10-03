@@ -27,13 +27,13 @@ bool test_func_bs(std::string& a){
 	int i = 0, j = a.length() - 1;
 	while(i < j){
 		if(a[i] != a[j]){
-			std::cout << "Is Palindrome: " << a << " = " << false << "\n";
+			//std::cout << "Is Palindrome: " << a << " = " << false << "\n";
 			return false;
 		}
 		++i;
 		--j;
 	}
-	std::cout << "Is Palindrome: " << a << " = " << true << "\n";
+	//std::cout << "Is Palindrome: " << a << " = " << true << "\n";
 	return true;
 }
 

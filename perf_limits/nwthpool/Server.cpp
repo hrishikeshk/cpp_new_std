@@ -2,12 +2,15 @@
 #include <utility>
 
 #include "Server.h"
+#include "pool.h"
+#include "BusinessLogic.h"
 
-Server::Server(const std::string& address, const std::string& port)
+Server::Server(const std::string& address, const std::string& port, unsigned int num_threads)
   : io_context_(1),
     signals_(io_context_),
     acceptor_(io_context_),
-    m_cm(){
+    m_cm(),
+	m_pPool(Pool::Instance()){
 
   signals_.add(SIGINT);
   signals_.add(SIGTERM);
@@ -16,6 +19,9 @@ Server::Server(const std::string& address, const std::string& port)
 #endif // defined(SIGQUIT)
 
   do_await_stop();
+
+  m_pPool->start_io();
+  m_pPool->create_num(num_threads);
 
   boost::asio::ip::tcp::resolver resolver(io_context_);
   boost::asio::ip::tcp::endpoint endpoint = *resolver.resolve(address, port).begin();
@@ -39,8 +45,12 @@ void Server::do_accept(){
         }
 
         if (!ec){
-          m_cm.start(std::make_shared<Connection>(
-              std::move(socket), m_cm));
+		  auto conn_ptr = std::make_shared<Connection>(std::move(socket), m_cm);
+          m_cm.start(conn_ptr);
+		  std::function<void(Connection_ptr&)> fp = businesslogicfptr;
+		  m_pPool->post_work_generic(fp, conn_ptr);
+		  m_pPool->poll();
+		  //fp(conn_ptr);
         }
 
         do_accept();
