@@ -31,8 +31,6 @@ public:
 	void start_io();
 	void stop_io();
 	
-	void post_work();
-	
 	template<typename WorkObj, typename ResultObj>
 	void post_work_generic_vec(std::vector<std::function<ResultObj(WorkObj&)>>& vf, 
 							std::vector<WorkObj>& vwo){
@@ -44,17 +42,6 @@ public:
 		ioService.poll();
 	}
 
-	/*
-	template<typename WorkObj, typename ResultObj>
-	void post_work_generic(std::function<ResultObj(WorkObj*)> f, 
-						   WorkObj& wo){
-		const auto& bb = boost::bind(f, &wo);
-		ioService.post(bb);
-		////std::cout << "... Finishing posting Generic\n";
-		
-		////ioService.poll();
-	}
-	*/
 	template<typename WorkObj, typename ResultObj>
 	void post_work_generic(std::function<ResultObj(WorkObj&)> f, 
 						   WorkObj& wo){
@@ -63,10 +50,6 @@ public:
 	}
 	
 	void poll();
-
-	void myTask(std::array<char, 4>&);
-	void clearCache(char);
-	void getSocialUpdates(int);
 };
 
 #endif // POOL_H

@@ -13,7 +13,7 @@ CurrentFileName        :=
 CurrentFilePath        :=
 CurrentFileFullPath    :=
 User                   :=Hrishikesh
-Date                   :=03/10/19
+Date                   :=10/10/19
 CodeLitePath           :=/home/hrishikesh/.codelite
 LinkerName             :=g++
 SharedObjectLinkerName :=g++ -shared -fPIC
@@ -60,7 +60,7 @@ AS       := as
 ## User defined environment variables
 ##
 CodeLiteDir:=/usr/share/codelite
-Objects0=$(IntermediateDirectory)/pool.cpp$(ObjectSuffix) $(IntermediateDirectory)/main.cpp$(ObjectSuffix) 
+Objects0=$(IntermediateDirectory)/main.cpp$(ObjectSuffix) $(IntermediateDirectory)/pool.cpp$(ObjectSuffix) 
 
 
 
@@ -91,14 +91,6 @@ PreBuild:
 ##
 ## Objects
 ##
-$(IntermediateDirectory)/pool.cpp$(ObjectSuffix): pool.cpp $(IntermediateDirectory)/pool.cpp$(DependSuffix)
-	$(CXX) $(IncludePCH) $(SourceSwitch) "/home/hrishikesh/work/github/cpp_new_std/perf_limits/nwthpoolTest/pool.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/pool.cpp$(ObjectSuffix) $(IncludePath)
-$(IntermediateDirectory)/pool.cpp$(DependSuffix): pool.cpp
-	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/pool.cpp$(ObjectSuffix) -MF$(IntermediateDirectory)/pool.cpp$(DependSuffix) -MM pool.cpp
-
-$(IntermediateDirectory)/pool.cpp$(PreprocessSuffix): pool.cpp
-	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/pool.cpp$(PreprocessSuffix) pool.cpp
-
 $(IntermediateDirectory)/main.cpp$(ObjectSuffix): main.cpp $(IntermediateDirectory)/main.cpp$(DependSuffix)
 	$(CXX) $(IncludePCH) $(SourceSwitch) "/home/hrishikesh/work/github/cpp_new_std/perf_limits/nwthpoolTest/main.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/main.cpp$(ObjectSuffix) $(IncludePath)
 $(IntermediateDirectory)/main.cpp$(DependSuffix): main.cpp
@@ -106,6 +98,14 @@ $(IntermediateDirectory)/main.cpp$(DependSuffix): main.cpp
 
 $(IntermediateDirectory)/main.cpp$(PreprocessSuffix): main.cpp
 	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/main.cpp$(PreprocessSuffix) main.cpp
+
+$(IntermediateDirectory)/pool.cpp$(ObjectSuffix): pool.cpp $(IntermediateDirectory)/pool.cpp$(DependSuffix)
+	$(CXX) $(IncludePCH) $(SourceSwitch) "/home/hrishikesh/work/github/cpp_new_std/perf_limits/nwthpoolTest/pool.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/pool.cpp$(ObjectSuffix) $(IncludePath)
+$(IntermediateDirectory)/pool.cpp$(DependSuffix): pool.cpp
+	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/pool.cpp$(ObjectSuffix) -MF$(IntermediateDirectory)/pool.cpp$(DependSuffix) -MM pool.cpp
+
+$(IntermediateDirectory)/pool.cpp$(PreprocessSuffix): pool.cpp
+	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/pool.cpp$(PreprocessSuffix) pool.cpp
 
 
 -include $(IntermediateDirectory)/*$(DependSuffix)

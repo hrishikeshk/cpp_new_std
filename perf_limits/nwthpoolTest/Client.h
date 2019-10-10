@@ -16,6 +16,7 @@ struct InputArgs{
 };
 
 int client_call(std::string& request){
+	std::cout << "In Client Start\n";
   try{
     boost::asio::io_context io_context;
 
@@ -34,6 +35,7 @@ int client_call(std::string& request){
     std::cout << "\n";
 	
 	s.close();
+	std::cout << "In Client End\n";
   }
   catch (std::exception& e){
     std::cerr << "Exception: " << e.what() << "\n";

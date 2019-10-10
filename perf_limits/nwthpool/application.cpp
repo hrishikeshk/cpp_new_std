@@ -35,5 +35,6 @@ void Application::run(){
 	////ThreadPoolUsage::run();
 	Server s("127.0.0.1", "8080", 5);
 	s.run();
+
 	std::cout << "Finished Server \n";
 }

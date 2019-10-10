@@ -7,6 +7,8 @@
 #ifndef CONNECTION
 #define CONNECTION
 
+bool test_func_bs22(std::string& a);
+
 const unsigned int BUFFSIZE = 8192;
 class ConnectionManager;
 
@@ -15,7 +17,6 @@ class Connection : public std::enable_shared_from_this<Connection>{
 	ConnectionManager& m_cm;
 	std::array<char, BUFFSIZE> m_buffer;
 	std::vector<boost::asio::const_buffer> m_write_buffer;
-	std::string reply;
 	void cm_stop();
 public:
 	Connection(const Connection&) = delete;
@@ -25,21 +26,53 @@ public:
 	
 	template <typename Result, typename Input>
 	void start(std::function<Result(Input&)> fp){
-		do_read(fp);
+		////do_read(fp);
+		sync_read(fp);
 	}
 
 	void stop(){
 		m_socket.close();
-		std::cout << "Socket closed\n";
 	}
 
 	template<typename Result, typename Input>
-	void do_read(std::function<Result(Input&)> fp){
+	void sync_read(std::function<Result(Input&)> fp){
+		std::cout << "Trying SYNC read\n";
+		auto self(shared_from_this());
+		boost::system::error_code ec;
+		auto bytes_transferred = m_socket.read_some(boost::asio::buffer(m_buffer), ec);
+        if (!ec){
+		  std::string in("");
+		  for(unsigned int i = 0; i < bytes_transferred; ++i){
+			  in += m_buffer[i];
+		  }
+		  ////bool res = fp(in);
+		  bool res = test_func_bs22(in);
+		  std::cout << in << "\n";
+		  boost::asio::socket_base::send_buffer_size option(BUFFSIZE);
+		  m_socket.set_option(option);
+		  std::string out("");
+		  if(res){
+			  out = in + ": is palindrome";
+		  }
+		  else{
+			  out = in + ": is NOT palindrome";
+		  }
+		  m_write_buffer.push_back(boost::asio::buffer(out));
+		  do_write();
+		  m_buffer.empty();
+        }
+        else if (ec != boost::asio::error::operation_aborted){
+          cm_stop();
+        }
+	}
+
+	template<typename Result, typename Input>
+	void do_read(std::function<Result(Input&)> fp){std::cout << "Trying read\n";
 		auto self(shared_from_this());
 		m_socket.async_read_some(boost::asio::buffer(m_buffer),
 		[this, self, fp](boost::system::error_code ec, std::size_t bytes_transferred){
         if (!ec){
-		  //std::cout << "Reading buffer, num bytes : " << bytes_transferred << " ... \n";
+		  std::cout << "Reading buffer, num bytes : " << bytes_transferred << " ... \n";
 		  std::string in("");
 		  for(unsigned int i = 0; i < bytes_transferred; ++i){
 			  in += m_buffer[i];
@@ -47,7 +80,10 @@ public:
           ////buffer_.data(), bytes_transferred
 		  ////do_read();if more data to read, based on indications from what was parsed so far.
 		  // else replying now
-		  bool res = fp(in);
+		  
+		  ////bool res = fp(in);
+		  bool res = test_func_bs22(in);
+		  
 		  boost::asio::socket_base::send_buffer_size option(BUFFSIZE);
 		  m_socket.set_option(option);
 		  std::string out("");
