@@ -25,7 +25,7 @@ int test_func_ii(int& a){
 
 bool test_func_bs(std::string& a){
 	int i = 0, j = a.length() - 1;
-	while(i < 100000){
+	while(i < 10000){
 		++i;
 		j = 0;
 		while(j < i){

@@ -12,7 +12,7 @@ int main(int argc, char* argv[]){
   try{
 	auto p = Pool::Instance();
 	p->start_io();
-	unsigned int num_thrs = 4;
+	unsigned int num_thrs = 10;
 	p->create_num(num_thrs);
 	std::function<int(std::string&)> fp = call_wrapper;
 	std::vector<std::function<int(std::string&)>> vfs;
@@ -27,6 +27,7 @@ int main(int argc, char* argv[]){
 	
 	p->stop_io();
 	Pool::Release();
+	std::cout << "Finishing client calls \n";
   }
   catch (std::exception& e){
     std::cerr << "Exception: " << e.what() << "\n";

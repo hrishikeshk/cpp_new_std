@@ -37,7 +37,6 @@ public:
 		for(unsigned int i = 0; i < vf.size(); ++i){
 			const auto& bb = boost::bind(vf[i], std::ref(vwo[i]));
 			ioService.post(bb);
-			////std::cout << "... Finishing posting Generic\n";
 		}
 		ioService.poll();
 	}

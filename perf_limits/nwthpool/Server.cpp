@@ -40,13 +40,15 @@ Server::Server(const std::string& address, const std::string& port, unsigned int
  * Such a listener will be supplied a single instance of io_service. 
  * Understandably, only one acceptor will
  * be actually accepting/listening on the port.
- * Once a client connects, we want to run a handler. The accept handler is complex, long running code.
- * We want to run each handler on separate threads and run handlers concurrently for each incoming client
+ * Once a client connects, we want to run a handler. The accept handler is complex, long 
+ running code.
+ * We want to run each handler on separate threads and run handlers concurrently for each 
+ incoming client
  * connection.
  * It appears that Boost.asio does not run handlers concurrently. 
- * The documentation provides examples with timers, and they work too. But what about a case in accept
+ * The documentation provides examples with timers, and they work too. But what about a 
+	case in accept
  * where only one thread may listen on the port ?
- * Stuck here. Please help.
  * 
 */
   boost::asio::ip::tcp::resolver resolver(io_context_);
@@ -74,14 +76,12 @@ void Server::sync_accept(){
 		if(!ec){
 		  auto conn_ptr = std::make_shared<Connection>(std::move(socket), m_cm);
           m_cm.start(conn_ptr);
-		  std::function<void(Connection_ptr&)> fp = businesslogicfptr;
-		  ////auto fp = std::make_shared<std::function<void(Connection_ptr&)>>(businesslogicfptr);
-		  m_pPool->post_work_generic(fp, conn_ptr);
-
-		  std::cout << "Done posting ...\n";
+		  ////std::function<void(Connection_ptr&)> fp = businesslogicfptr;
+		  auto fp = std::make_shared<std::function<void(Connection_ptr&)>>(businesslogicfptr);
+		  m_pPool->post_work_generic(*fp, conn_ptr);
 		}
 		else{
-			std::cout << "Error in accepting \n";
+			std::cout << "Error in accepting : " << ec.message() << "\n";
 		}
 	}
 }
@@ -109,30 +109,6 @@ std::cout << "Done accept and Posting. Proceeding to next accept ...\n";
 std::cout << "After setting off async accept ... \n";
 }
 
-/*
-void accept_helper(boost::asio::ip::tcp::socket sock, ConnectionManager& cm){
-	  auto conn_ptr = std::make_shared<Connection>(std::move(sock), cm);
-      cm.start(conn_ptr);
-	  std::function<void(Connection_ptr&)> fp = businesslogicfptr;
-	  //m_pPool->post_work_generic(fp, conn_ptr);
-	  //m_pPool->poll();
-	  std::cout << "Calling BL\n";
-	  fp(conn_ptr);
-	  std::cout << "Finished BL\n";
-}
-
-void Server::do_accept(){
-	boost::system::error_code ec;
-	while(true){
-		if (!acceptor_.is_open()){
-          break;
-        }
-		std::cout << "Trying Accept now ... \n";
-		accept_helper(acceptor_.accept(ec), m_cm);
-		std::cout << "Trying accept AGAIN now ...\n";
-	}
-}
-*/
 void Server::do_await_stop(){
   signals_.async_wait(
       [this](boost::system::error_code /*ec*/, int /*signo*/){

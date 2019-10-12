@@ -40,7 +40,6 @@ public:
 		for(unsigned int i = 0; i < vf.size(); ++i){
 			const auto& bb = boost::bind(vf[i], std::ref(vwo[i]));
 			ioService.post(bb);
-			////std::cout << "... Finishing posting Generic\n";
 		}
 		ioService.poll();
 	}
@@ -63,7 +62,7 @@ public:
 		ioService.post(bb);
 		////boost::asio::post(bb);
 	}
-	
+
 	template<typename ResultObj>
 	void post_work_generic(std::function<ResultObj()> f){
 		////const auto& bb = boost::bind(f);
@@ -72,10 +71,6 @@ public:
 	}
 	
 	void poll();
-
-	void myTask(std::array<char, 4>&);
-	void clearCache(char);
-	void getSocialUpdates(int);
 };
 
 #endif // POOL_H

@@ -9,8 +9,13 @@ Pool::Pool(){
 }
 
 Pool::~Pool(){
-	//delete pwork;
-	threadpool.join_all();
+	//delete pwork;"
+	try{
+		threadpool.join_all();
+	}
+	catch(std::exception ex){
+		std::cout << "Exception in Pool release and dtor\n";
+	}
 }
 
 Pool* Pool::Instance(){

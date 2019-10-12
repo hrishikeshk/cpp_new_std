@@ -1,5 +1,6 @@
 #include <set>
 
+#include <boost/thread/mutex.hpp>
 #ifndef CONNECTION_MANAGER
 #define CONNECTION_MANAGER
 
@@ -20,6 +21,7 @@ class ConnectionManager{
 
 private:
   std::set<Connection_ptr> m_conns;
+  boost::mutex m_cmlock;
 };
 
 #endif

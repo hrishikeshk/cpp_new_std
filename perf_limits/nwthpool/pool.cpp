@@ -10,7 +10,12 @@ Pool::Pool(){
 
 Pool::~Pool(){
 	//delete pwork;
-	threadpool.join_all();
+	try{
+		threadpool.join_all();
+	}
+	catch(std::exception ex){
+		std::cout << "exception in pool release dtor: " << ex.what() << "\n";
+	}
 }
 
 Pool* Pool::Instance(){
@@ -42,30 +47,6 @@ void Pool::stop_io(){
 	ioService.stop();
 }
 
-void Pool::post_work(){
-	std::array<char, 4> a;
-	a[0] = '7'; a[1] = '7'; a[2] = '8'; a[3] = '6';
-	const auto& bb = boost::bind(&Pool::myTask, this, a);
-	ioService.post(bb);
-
-	ioService.post(boost::bind(&Pool::clearCache, this, 'Y'));
-	ioService.post(boost::bind(&Pool::getSocialUpdates, this, 7786));
-	std::cout << "... ... Finishing posting\n";
-	ioService.poll();
-}
-
 void Pool::poll(){
 	ioService.poll();
-}
-
-void Pool::myTask(std::array<char, 4>& p){
-	std::cout << p[0] << "\n";
-}
-
-void Pool::clearCache(char p){
-	std::cout << p << "\n";
-}
-
-void Pool::getSocialUpdates(int p){
-	std::cout << p << "\n";
 }
