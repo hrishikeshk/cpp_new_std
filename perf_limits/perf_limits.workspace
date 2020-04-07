@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CodeLite_Workspace Name="perf_limits" Database="" Version="10.0.0">
-  <Project Name="nwthpool" Path="nwthpool/nwthpool.project" Active="Yes"/>
+  <Project Name="nwthpool" Path="nwthpool/nwthpool.project" Active="No"/>
   <Project Name="nwthpoolTest" Path="nwthpoolTest/nwthpoolTest.project" Active="No"/>
   <Project Name="timer" Path="timer/timer.project" Active="No"/>
   <Project Name="temp_test" Path="temp_test/temp_test.project" Active="No"/>
+  <Project Name="std_thread_pool_test" Path="std_thread_pool_test/std_thread_pool_test.project" Active="Yes"/>
   <BuildMatrix>
     <WorkspaceConfiguration Name="Debug" Selected="yes">
       <Environment/>
@@ -11,6 +12,8 @@
       <Project Name="nwthpoolTest" ConfigName="Debug"/>
       <Project Name="timer" ConfigName="Debug"/>
       <Project Name="temp_test" ConfigName="Debug"/>
+      <Project Name="testcc1" ConfigName="Debug"/>
+      <Project Name="std_thread_pool_test" ConfigName="Debug"/>
     </WorkspaceConfiguration>
     <WorkspaceConfiguration Name="Release" Selected="yes">
       <Environment/>
@@ -18,6 +21,8 @@
       <Project Name="nwthpoolTest" ConfigName="Release"/>
       <Project Name="timer" ConfigName="Release"/>
       <Project Name="temp_test" ConfigName="Release"/>
+      <Project Name="testcc1" ConfigName="Release"/>
+      <Project Name="std_thread_pool_test" ConfigName="Release"/>
     </WorkspaceConfiguration>
   </BuildMatrix>
 </CodeLite_Workspace>

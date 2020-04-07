@@ -28,6 +28,8 @@ public:
 	explicit Connection(boost::asio::ip::tcp::socket socket, 
 						ConnectionManager& manager);
 	
+	////explicit Connection(ConnectionManager& manager);
+
 	template <typename Result, typename Input>
 	void start(std::function<Result(Input&)> fp){
 		//do_read(fp);
@@ -37,7 +39,11 @@ public:
 	void stop(){
 		m_socket.close();
 	}
-
+/*
+    void set_socket(boost::asio::ip::tcp::socket& s){
+		m_socket = &s;
+	}
+*/
 	template<typename Result, typename Input>
 	void sync_read(std::function<Result(Input&)> fp){
 		auto self(shared_from_this());
@@ -53,8 +59,8 @@ public:
 		  }
 		  bool res = fp(in);
 		  //bool res = test_func_bs22(in);
-		  boost::asio::socket_base::send_buffer_size option(BUFFSIZE);
-		  m_socket.set_option(option);
+		  ////boost::asio::socket_base::send_buffer_size option(BUFFSIZE);
+		  ////m_socket.set_option(option);
 		  std::string out("");
 		  if(res){
 			  out = in + ": is palindrome";

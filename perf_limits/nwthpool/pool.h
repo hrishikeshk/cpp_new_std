@@ -62,6 +62,14 @@ public:
 		ioService.post(bb);
 		////boost::asio::post(bb);
 	}
+	
+	template<typename WorkObj, typename ResultObj>
+	void post_work_generic(std::function<ResultObj(WorkObj)> f, 
+						   WorkObj wo){
+		const auto& bb = boost::bind(f, wo);
+		ioService.post(bb);
+		////boost::asio::post(bb);
+	}
 
 	template<typename ResultObj>
 	void post_work_generic(std::function<ResultObj()> f){

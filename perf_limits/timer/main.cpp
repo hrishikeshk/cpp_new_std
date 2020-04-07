@@ -5,41 +5,47 @@
 #include <iostream>
 
 using namespace boost::asio;
-
+/*
+Run and Observe two cores of the computer burning. 
+Proves that the timer objects run the CPU intensive lambdas in parallel.
+*/
 int main(){
   io_service ioservice1;
   io_service ioservice2;
 
   steady_timer timer1{ioservice1, std::chrono::seconds{3}};
   timer1.async_wait([](const boost::system::error_code &ec)
-    { std::cout << "triggered 1\n";
+    { 
+		std::cout << "triggered 1\n";
 		int i = 0, j = 1;
-	while(i < 100000){
-		++i;
-		j = 0;
-		while(j < i){
-			j++;
+		while(i < 100000){
+			++i;
+			j = 0;
+			while(j < i){
+				j++;
+			}
 		}
-	}
-	i = 0;
-	j = 1;
-		std::cout << "3 sec\n"; });
+		i = 0;
+		j = 1;
+		std::cout << "3 sec\n"; 
+	});
 
   steady_timer timer2{ioservice2, std::chrono::seconds{3}};
   timer2.async_wait([](const boost::system::error_code &ec)
-    { std::cout << "triggered 2\n";
+    { 
+		std::cout << "triggered 2\n";
 		int i = 0, j = 1;
-	while(i < 100000){
-		++i;
-		j = 0;
-		while(j < i){
-			j++;
+		while(i < 100000){
+			++i;
+			j = 0;
+			while(j < i){
+				j++;
+			}
 		}
-	}
-	i = 0;
-	j = 1;
-
-		std::cout << "3 sec\n"; });
+		i = 0;
+		j = 1;
+		std::cout << "3_2 sec\n"; 
+	});
 
   std::thread thread1{[&ioservice1](){ ioservice1.run(); }};
   std::thread thread2{[&ioservice2](){ ioservice2.run(); }};

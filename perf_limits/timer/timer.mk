@@ -13,7 +13,7 @@ CurrentFileName        :=
 CurrentFilePath        :=
 CurrentFileFullPath    :=
 User                   :=Hrishikesh
-Date                   :=07/10/19
+Date                   :=07/04/20
 CodeLitePath           :=/home/hrishikesh/.codelite
 LinkerName             :=g++
 SharedObjectLinkerName :=g++ -shared -fPIC
@@ -36,12 +36,12 @@ ObjectsFileList        :="timer.txt"
 PCHCompileFlags        :=
 MakeDirCommand         :=mkdir -p
 LinkOptions            :=  
-IncludePath            :=  $(IncludeSwitch). $(IncludeSwitch)/home/hrishikesh/work/boost/include 
+IncludePath            := $(IncludeSwitch)/home/hrishikesh/work/boost/include  $(IncludeSwitch). $(IncludeSwitch)/home/hrishikesh/work/boost/include 
 IncludePCH             := 
 RcIncludePath          := 
 Libs                   := $(LibrarySwitch)boost_system $(LibrarySwitch)boost_thread $(LibrarySwitch)pthread 
 ArLibs                 :=  "boost_system" "boost_thread" "pthread" 
-LibPath                := $(LibraryPathSwitch). $(LibraryPathSwitch)/home/hrishikesh/work/boost/lib 
+LibPath                :=$(LibraryPathSwitch)/home/hrishikesh/work/boost/boost_1_71_0/libs  $(LibraryPathSwitch). $(LibraryPathSwitch)/home/hrishikesh/work/boost/lib 
 
 ##
 ## Common variables

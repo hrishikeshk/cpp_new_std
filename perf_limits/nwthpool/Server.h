@@ -18,12 +18,12 @@
 class Pool;
 
 class Server{
-  void sync_accept();
+  ////void sync_accept();
   void do_accept();
   void do_await_stop();
   
   //boost::asio::io_context io_context_;
-  boost::asio::io_service io_context_;
+  boost::asio::io_service io_service_;
   
   std::vector<boost::asio::io_service> v_io_svc;
   boost::asio::signal_set signals_;

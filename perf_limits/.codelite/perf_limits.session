@@ -1,54 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Session Name="/home/hrishikesh/work/github/cpp_new_std/perf_limits/perf_limits.workspace">
-  <int Value="0" Name="m_selectedTab"/>
+  <int Value="1" Name="m_selectedTab"/>
   <wxString Value="/home/hrishikesh/work/github/cpp_new_std/perf_limits/perf_limits.workspace" Name="m_workspaceName"/>
   <TabInfoArray Name="TabInfoArray">
     <TabInfo>
-      <wxString Value="/home/hrishikesh/work/github/cpp_new_std/perf_limits/nwthpool/Connection.h" Name="FileName"/>
-      <int Value="47" Name="FirstVisibleLine"/>
-      <int Value="89" Name="CurrentLine"/>
-      <wxArrayString Name="Bookmarks"/>
-      <IntVector Name="CollapsedFolds"/>
-    </TabInfo>
-    <TabInfo>
-      <wxString Value="/home/hrishikesh/work/github/cpp_new_std/perf_limits/nwthpool/Server.h" Name="FileName"/>
-      <int Value="30" Name="FirstVisibleLine"/>
-      <int Value="33" Name="CurrentLine"/>
-      <wxArrayString Name="Bookmarks"/>
-      <IntVector Name="CollapsedFolds"/>
-    </TabInfo>
-    <TabInfo>
-      <wxString Value="/home/hrishikesh/work/github/cpp_new_std/perf_limits/nwthpool/Server.cpp" Name="FileName"/>
-      <int Value="61" Name="FirstVisibleLine"/>
-      <int Value="87" Name="CurrentLine"/>
-      <wxArrayString Name="Bookmarks"/>
-      <IntVector Name="CollapsedFolds"/>
-    </TabInfo>
-    <TabInfo>
-      <wxString Value="/home/hrishikesh/work/github/cpp_new_std/perf_limits/nwthpoolTest/pool.h" Name="FileName"/>
-      <int Value="24" Name="FirstVisibleLine"/>
-      <int Value="52" Name="CurrentLine"/>
-      <wxArrayString Name="Bookmarks"/>
-      <IntVector Name="CollapsedFolds"/>
-    </TabInfo>
-    <TabInfo>
-      <wxString Value="/home/hrishikesh/work/github/cpp_new_std/perf_limits/nwthpool/Connection.cpp" Name="FileName"/>
+      <wxString Value="/home/hrishikesh/work/github/cpp_new_std/perf_limits/std_thread_pool_test/main.cpp" Name="FileName"/>
       <int Value="0" Name="FirstVisibleLine"/>
-      <int Value="17" Name="CurrentLine"/>
+      <int Value="3" Name="CurrentLine"/>
       <wxArrayString Name="Bookmarks"/>
       <IntVector Name="CollapsedFolds"/>
     </TabInfo>
     <TabInfo>
-      <wxString Value="/home/hrishikesh/work/github/cpp_new_std/perf_limits/nwthpool/ConnectionManager.cpp" Name="FileName"/>
+      <wxString Value="/home/hrishikesh/work/github/cpp_new_std/perf_limits/std_thread_pool_test/ThreadPool.h" Name="FileName"/>
       <int Value="0" Name="FirstVisibleLine"/>
-      <int Value="11" Name="CurrentLine"/>
+      <int Value="5" Name="CurrentLine"/>
       <wxArrayString Name="Bookmarks"/>
       <IntVector Name="CollapsedFolds"/>
     </TabInfo>
     <TabInfo>
-      <wxString Value="/home/hrishikesh/work/github/cpp_new_std/perf_limits/nwthpool/ConnectionManager.h" Name="FileName"/>
-      <int Value="0" Name="FirstVisibleLine"/>
-      <int Value="0" Name="CurrentLine"/>
+      <wxString Value="/home/hrishikesh/work/github/cpp_new_std/perf_limits/std_thread_pool_test/ThreadPool.cpp" Name="FileName"/>
+      <int Value="28" Name="FirstVisibleLine"/>
+      <int Value="61" Name="CurrentLine"/>
       <wxArrayString Name="Bookmarks"/>
       <IntVector Name="CollapsedFolds"/>
     </TabInfo>

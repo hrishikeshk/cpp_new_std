@@ -1,0 +1,25 @@
+Testiing for performance and evaluating concurrency using perf and strace - 
+ https://easyperf.net/blog/2019/10/05/Performance-Analysis-Of-MT-apps
+
+For an executable h264dec
+
+perf stat ./h264dec -i park_joy_2160p.h264 -t 1 -o output.file -v
+
+Profiling - 
+
+perf record -o perf1.data -- ./h264dec -i park_joy_2160p.h264 -t 1 -o output.file -v
+
+and read interpret by 
+
+perf report -n -i perf1.data --stdio
+
+Per thread view by
+-s option -
+
+perf record -s ./h264dec -i park_joy_2160p.h264 -t 8 -o output.file -v
+
+perf report -n -T
+
+Using strace -
+strace -tt -ff -T -o strace-dump -- ./h264dec -i park_joy_2160p.h264 -t 8 -o output.file
+

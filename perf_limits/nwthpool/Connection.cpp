@@ -12,6 +12,15 @@ Connection::Connection(boost::asio::ip::tcp::socket socket,
 
 }
 
+/*
+Connection::Connection(ConnectionManager& manager)
+  : m_cm(manager){
+
+}
+*/
+
 void Connection::cm_stop(){
 	m_cm.stop(shared_from_this());
+	boost::system::error_code ignored_ec;
+	m_socket.shutdown(boost::asio::ip::tcp::socket::shutdown_both, ignored_ec);
 }

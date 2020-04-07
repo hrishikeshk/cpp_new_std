@@ -11,9 +11,9 @@
 Server::Server(const std::string& address, const std::string& port, unsigned int num_threads)
   : num_thr(num_threads),
     v_io_svc(num_threads),
-	signals_(io_context_),
-    acceptor_(io_context_),
-    m_cm(),
+	signals_(io_service_),
+    acceptor_(io_service_),
+    ////m_cm(num_threads),
 	m_pPool(Pool::Instance()){
 
   signals_.add(SIGINT);
@@ -51,39 +51,27 @@ Server::Server(const std::string& address, const std::string& port, unsigned int
  * where only one thread may listen on the port ?
  * 
 */
-  boost::asio::ip::tcp::resolver resolver(io_context_);
+  boost::asio::ip::tcp::resolver resolver(io_service_);
   boost::asio::ip::tcp::endpoint endpoint = *resolver.resolve(address, port).begin();
   acceptor_.open(endpoint.protocol());
   acceptor_.set_option(boost::asio::ip::tcp::acceptor::reuse_address(true));
   acceptor_.bind(endpoint);
   acceptor_.listen();
 
-  ////do_accept();
-  sync_accept();
+  do_accept();
+  ////sync_accept();
 }
 
 void Server::run(){
-	io_context_.run();
-}
-
-void Server::sync_accept(){
-	while(true){
-		if(!acceptor_.is_open()){
-			continue;
-		}
-		boost::system::error_code ec;
-		boost::asio::ip::tcp::socket socket = acceptor_.accept(ec);
-		if(!ec){
-		  auto conn_ptr = std::make_shared<Connection>(std::move(socket), m_cm);
-          m_cm.start(conn_ptr);
-		  ////std::function<void(Connection_ptr&)> fp = businesslogicfptr;
-		  auto fp = std::make_shared<std::function<void(Connection_ptr&)>>(businesslogicfptr);
-		  m_pPool->post_work_generic(*fp, conn_ptr);
-		}
-		else{
-			std::cout << "Error in accepting : " << ec.message() << "\n";
-		}
+	////io_service_.run();
+	for(unsigned int i = 0; i < num_thr; ++i){
+		std::function<void()> fa = [this](){std::cout << "Running Svc... \n"; io_service_.run();};
+		m_pPool->post_work_generic(fa);
 	}
+	m_pPool->poll();
+	std::cout << "Out of run... \n";
+	m_pPool->stop_io();
+	Pool::Release();
 }
 
 void Server::do_accept(){
@@ -99,7 +87,6 @@ std::cout << "Within accept. Proceeding to Posting ...";
           m_cm.start(conn_ptr);
 		  std::function<void(Connection_ptr&)> fp = businesslogicfptr;
 		  m_pPool->post_work_generic(fp, conn_ptr);
-		  
 		  //m_pPool->poll();
 		  ////fp(conn_ptr);
         }
@@ -116,3 +103,24 @@ void Server::do_await_stop(){
         m_cm.stop_all();
       });
 }
+
+/*
+void Server::sync_accept(){
+	while(true){
+		if(!acceptor_.is_open()){
+			continue;
+		}
+		boost::system::error_code ec;
+		boost::asio::ip::tcp::socket socket = acceptor_.accept(ec);
+		if(!ec){
+		  auto conn_ref = m_cm.start(socket);
+		  auto fp = std::make_shared<std::function<void(Connection_ptr)>>(businesslogicfptr);
+		  ////m_pPool->post_work_generic(*fp, m_cm.use(conn_ref));
+		  (*fp)(m_cm.use(conn_ref));
+		}
+		else{
+			std::cout << "Error in accepting : " << ec.message() << "\n";
+		}
+	}
+}
+*/

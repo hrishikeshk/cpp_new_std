@@ -11,7 +11,7 @@ namespace ThreadPoolUsage{
 		auto pp = Pool::Instance();
 	
 		pp->start_io();
-	
+
 		pp->create_num(5);
 
 		int a = 12345;

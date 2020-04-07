@@ -12,7 +12,7 @@ int main(int argc, char* argv[]){
   try{
 	auto p = Pool::Instance();
 	p->start_io();
-	unsigned int num_thrs = 10;
+	unsigned int num_thrs = 1;
 	p->create_num(num_thrs);
 	std::function<int(std::string&)> fp = call_wrapper;
 	std::vector<std::function<int(std::string&)>> vfs;
